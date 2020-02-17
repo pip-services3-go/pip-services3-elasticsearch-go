@@ -1,11 +1,17 @@
 package log
 
 import (
+	"bytes"
+	"encoding/json"
+	"fmt"
 	"net/http"
+	"strconv"
+	"strings"
 	"time"
 
 	esv8 "github.com/elastic/go-elasticsearch/v8"
 	cconf "github.com/pip-services3-go/pip-services3-commons-go/config"
+	cdata "github.com/pip-services3-go/pip-services3-commons-go/data"
 	cerr "github.com/pip-services3-go/pip-services3-commons-go/errors"
 	cref "github.com/pip-services3-go/pip-services3-commons-go/refer"
 	clog "github.com/pip-services3-go/pip-services3-components-go/log"
@@ -13,7 +19,7 @@ import (
 )
 
 /*
-Logger that dumps execution logs to ElasticSearch service.
+ElasticSearchLogger is logger that dumps execution logs to ElasticSearch service.
 
 ElasticSearch is a popular search index. It is often used
 to store and index execution logs by itself or as a part of
@@ -49,23 +55,20 @@ Authentication is not supported in this version.
 
  Example
 
-    let logger = new ElasticSearchLogger();
-    logger.configure(ConfigParams.fromTuples(
+    let logger = NewElasticSearchLogger();
+    logger.Configure(cconf.NewConfigParamsFromTuples(
         "connection.protocol", "http",
         "connection.host", "localhost",
-        "connection.port", 9200
+		"connection.port", "9200"
     ));
 
-    logger.open("123", (err) => {
-        ...
-    });
+    logger.Open("123")
 
-    logger.error("123", ex, "Error occured: %s", ex.message);
-    logger.debug("123", "Everything is OK.");
+    logger.Error("123", ex, "Error occured: %s", ex.message);
+    logger.Debug("123", "Everything is OK.");
 */
-// implements IReferenceable, IOpenable
 type ElasticSearchLogger struct {
-	clog.CachedLogger
+	*clog.CachedLogger
 	connectionResolver *crpccon.HttpConnectionResolver
 
 	timer        chan bool
@@ -76,33 +79,31 @@ type ElasticSearchLogger struct {
 	timeout      int
 	maxRetries   int
 	indexMessage bool
-	interval     int
 
 	client *esv8.Client
 }
 
-/*
-   Creates a new instance of the logger.
-*/
+// NewElasticSearchLogger method creates a new instance of the logger.
+// Retruns *ElasticSearchLogger
+// pointer on new ElasticSearchLogger
 func NewElasticSearchLogger() *ElasticSearchLogger {
 	esl := ElasticSearchLogger{}
-	//esl.CachedLogger = clog.NewCachedLogger()
+	esl.CachedLogger = clog.InheritCachedLogger(&esl)
 	esl.connectionResolver = crpccon.NewHttpConnectionResolver()
 	esl.index = "log"
 	esl.dailyIndex = false
 	esl.reconnect = 60000
 	esl.timeout = 30000
 	esl.maxRetries = 3
-	esl.interval = 10000
+	esl.Interval = 10000
 	esl.indexMessage = false
 	return &esl
 }
 
-/*
-Configures component by passing configuration parameters.
-
-- config    configuration parameters to be set.
-*/
+// Configure are configures component by passing configuration parameters.
+// Parameters:
+// 	- config  *cconf.ConfigParams
+//   configuration parameters to be set.
 func (c *ElasticSearchLogger) Configure(config *cconf.ConfigParams) {
 	c.CachedLogger.Configure(config)
 
@@ -114,34 +115,28 @@ func (c *ElasticSearchLogger) Configure(config *cconf.ConfigParams) {
 	c.timeout = config.GetAsIntegerWithDefault("options.timeout", c.timeout)
 	c.maxRetries = config.GetAsIntegerWithDefault("options.max_retries", c.maxRetries)
 	c.indexMessage = config.GetAsBooleanWithDefault("options.index_message", c.indexMessage)
-
-	c.interval = config.GetAsIntegerWithDefault("options.interval", c.interval)
 }
 
-/*
-Sets references to dependent components.
-
-- references 	references to locate the component dependencies.
-*/
+// SetReferences method are sets references to dependent components.
+// Parameters:
+// 	- references cref.IReferences
+// 	references to locate the component dependencies.
 func (c *ElasticSearchLogger) SetReferences(references cref.IReferences) {
 	c.CachedLogger.SetReferences(references)
 	c.connectionResolver.SetReferences(references)
 }
 
-/*
-Checks if the component is opened.
-Returns true if the component has been opened and false otherwise.
-*/
+// IsOpen method are checks if the component is opened.
+// Returns true if the component has been opened and false otherwise.
 func (c *ElasticSearchLogger) IsOpen() bool {
 	return c.timer != nil
 }
 
-/*
-Opens the component.
-
-- correlationId 	(optional) transaction id to trace execution through call chain.
-- callback 			callback function that receives error or nil no errors occured.
-*/
+// Open method are ppens the component.
+// Parameters:
+// - correlationId string
+// 	(optional) transaction id to trace execution through call chain.
+// Returns error or nil, if no errors occured.
 func (c *ElasticSearchLogger) Open(correlationId string) (err error) {
 	if c.IsOpen() {
 		return nil
@@ -175,18 +170,16 @@ func (c *ElasticSearchLogger) Open(correlationId string) (err error) {
 
 	err = c.createIndexIfNeeded(correlationId, true)
 	if err == nil {
-		c.timer = setInterval(func() { c.Dump() }, c.interval, true)
+		c.timer = setInterval(func() { c.Dump() }, c.Interval, true)
 	}
 
 	return nil
 }
 
-/*
-Closes component and frees used resources.
-
-- correlationId 	(optional) transaction id to trace execution through call chain.
-- callback 			callback function that receives error or nil no errors occured.
-*/
+// Close method are closes component and frees used resources.
+// Parameters:
+// - correlationId  string	(optional) transaction id to trace execution through call chain.
+// Returns error or nil, if no errors occured.
 func (c *ElasticSearchLogger) Close(correlationId string) (err error) {
 	svErr := c.Save(c.Cache)
 	if svErr == nil {
@@ -197,7 +190,7 @@ func (c *ElasticSearchLogger) Close(correlationId string) (err error) {
 		c.timer <- true
 	}
 
-	c.Cache = nil
+	c.Cache = make([]*clog.LogMessage, 0, 0)
 
 	c.timer = nil
 	c.client = nil
@@ -219,70 +212,74 @@ func (c *ElasticSearchLogger) createIndexIfNeeded(correlationId string, force bo
 	}
 
 	c.currentIndex = newIndex
-	//     c.client.indices.exists(
-	//         { index: c.currentIndex },
-	//         (err, exists) => {
-	//             if (err || exists) {
-	//                 callback(err);
-	//                 return;
-	//             }
+	exists, err := c.client.Indices.Exists([]string{c.currentIndex})
+	if err != nil || exists.StatusCode == 404 {
+		return err
+	}
 
-	//             c.client.indices.create(
-	//                 {
-	//                     index: c.currentIndex,
-	//                     body: {
-	//                         settings: {
-	//                             int_of_shards: 1
-	//                         },
-	//                         mappings: {
-	//                             log_message: {
-	//                                 properties: {
-	//                                     time: { type: "date", index: true },
-	//                                     source: { type: "keyword", index: true },
-	//                                     level: { type: "keyword", index: true },
-	//                                     correlation_id: { type: "text", index: true },
-	//                                     error: {
-	//                                         type: "object",
-	//                                         properties: {
-	//                                             type: { type: "keyword", index: true },
-	//                                             category: { type: "keyword", index: true },
-	//                                             status: { type: "integer", index: false },
-	//                                             code: { type: "keyword", index: true },
-	//                                             message: { type: "text", index: false },
-	//                                             details: { type: "object" },
-	//                                             correlation_id: { type: "text", index: false },
-	//                                             cause: { type: "text", index: false },
-	//                                             stack_trace: { type: "text", index: false }
-	//                                         }
-	//                                     },
-	//                                     message: { type: "text", index: c.indexMessage }
-	//                                 }
-	//                             }
-	//                         }
-	//                     }
-	//                 },
-	//                 (err) => {
-	//                     // Skip already exist errors
-	//                     if (err && err.message.indexOf("resource_already_exists") >= 0)
-	//                         err = nil;
+	indBody := `{
+		"settings": {
+			"number_of_shards": "1"
+		},
+		"mappings": {
+			"log_message": {
+				"properties": {
+					"time": { "type": "date", "index": true },
+					"source": { "type": "keyword", "index": true },
+					"level": { "type": "keyword", "index": true },
+					"correlation_id": { "type": "text", "index": true },
+					"error": {
+						"type": "object",
+						"properties": {
+							"type": { "type": "keyword", "index": true },
+							"category": { "type": "keyword", "index": true },
+							"status": { "type": "integer", "index": false },
+							"code": { "type": "keyword", "index": true },
+							"message": { "type": "text", "index": false },
+							"details": { "type": "object" },
+							"correlation_id": { "type": "text", "index": false },
+							"cause": { "type": "text", "index": false },
+							"stack_trace": { "type": "text", "index": false }
+						}
+					},
+					"message": { "type": "text", "index":` + strconv.FormatBool(c.indexMessage) + ` }
+				}
+			}
+		}
+	}`
 
-	//                     callback(err);
-	//                 }
-	//             );
-	//         }
-	//     );
+	resp, err := c.client.Indices.Create(c.currentIndex,
+		c.client.Indices.Create.WithBody(strings.NewReader(indBody)),
+	)
+	if resp != nil {
+		defer resp.Body.Close()
+	}
+
+	if err != nil {
+		return err
+	}
+
+	if resp.IsError() {
+		var e map[string]interface{}
+		if err = json.NewDecoder(resp.Body).Decode(&e); err != nil {
+			return err
+		}
+		// Skip already exist errors
+		if strings.Index(e["error"].(map[string]interface{})["type"].(string), "resource_already_exists") >= 0 {
+			return nil
+		}
+		err = cerr.NewError(e["error"].(map[string]interface{})["type"].(string)).WithCauseString(e["error"].(map[string]interface{})["reason"].(string))
+	}
 	return nil
 }
 
-/*
-Saves log messages from the cache.
+// Save method are saves log messages from the cache.
+// Parameters:
+// - messages  a list with log messages
+// Retruns error or nil for success.
+func (c *ElasticSearchLogger) Save(messages []*clog.LogMessage) (err error) {
 
-- messages  a list with log messages
-- callback  callback function that receives error or nil for success.
-*/
-func (c *ElasticSearchLogger) Save(messages []clog.LogMessage) (err error) {
-
-	if !c.IsOpen() && len(messages) == 0 {
+	if !c.IsOpen() || len(messages) == 0 {
 		return nil
 	}
 
@@ -292,38 +289,51 @@ func (c *ElasticSearchLogger) Save(messages []clog.LogMessage) (err error) {
 		return nil
 	}
 
-	// let bulk = [];
-	// for (let message of messages) {
-	//     bulk.push({ index: { index: c.currentIndex, _type: "log_message", _id: IdGenerator.nextLong() } })
-	//     bulk.push(message);
-	// }
-	// c.client.Bulk({ body: bulk }, callback);
+	var buf bytes.Buffer
+	for _, message := range messages {
+		meta := []byte(fmt.Sprintf(`{ "index": { "_index":"%s", "_type":"log_message", "_id":"%s"}}%s`, c.currentIndex, cdata.IdGenerator.NextLong(), "\n"))
+		data, err := json.Marshal(message)
+
+		if err != nil {
+			c.Logger.Error("", err, "Cannot encode message "+err.Error())
+		}
+		data = append(data, "\n"...)
+		buf.Grow(len(meta) + len(data))
+		buf.Write(meta)
+		buf.Write(data)
+	}
+
+	resp, err := c.client.Bulk(bytes.NewReader(buf.Bytes()), c.client.Bulk.WithIndex(c.currentIndex))
+	if err != nil {
+		c.Logger.Error("", err, "Failure indexing batch %s", err.Error())
+	}
+	if resp != nil {
+		defer resp.Body.Close()
+	}
+	buf.Reset()
+
+	if resp.IsError() {
+		var e map[string]interface{}
+		if err = json.NewDecoder(resp.Body).Decode(&e); err != nil {
+			return err
+		}
+		err = cerr.NewError(e["error"].(map[string]interface{})["type"].(string)).WithCauseString(e["error"].(map[string]interface{})["reason"].(string))
+	}
 	return err
 }
 
 func setInterval(someFunc func(), milliseconds int, async bool) chan bool {
 
-	// How often to fire the passed in function
-	// in milliseconds
 	interval := time.Duration(milliseconds) * time.Millisecond
-
-	// Setup the ticket and the channel to signal
-	// the ending of the interval
 	ticker := time.NewTicker(interval)
 	clear := make(chan bool)
-
-	// Put the selection in a go routine
-	// so that the for loop is none blocking
 	go func() {
 		for {
-
 			select {
 			case <-ticker.C:
 				if async {
-					// This won't block
 					go someFunc()
 				} else {
-					// This will block
 					someFunc()
 				}
 			case <-clear:
@@ -334,7 +344,5 @@ func setInterval(someFunc func(), milliseconds int, async bool) chan bool {
 		}
 	}()
 
-	// We return the channel so we can pass in
-	// a value to it to clear the interval
 	return clear
 }
