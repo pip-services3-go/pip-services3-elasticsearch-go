@@ -21,6 +21,7 @@ func NewLoggerFixture(logger *clog.CachedLogger) *LoggerFixture {
 
 func (c *LoggerFixture) TestLogLevel(t *testing.T) {
 	assert.True(t, c.logger.Level() >= clog.None)
+
 	assert.True(t, c.logger.Level() <= clog.Trace)
 }
 

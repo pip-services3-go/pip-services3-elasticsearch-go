@@ -1,4 +1,4 @@
-module github.com/pip-services3-node/pip-services3-elasticsearch-go
+module github.com/pip-services3-go/pip-services3-elasticsearch-go
 
 go 1.13
 

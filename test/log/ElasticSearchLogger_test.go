@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	cconf "github.com/pip-services3-go/pip-services3-commons-go/config"
-	elog "github.com/pip-services3-node/pip-services3-elasticsearch-go/log"
+	elog "github.com/pip-services3-go/pip-services3-elasticsearch-go/log"
 	"github.com/stretchr/testify/assert"
 )
 

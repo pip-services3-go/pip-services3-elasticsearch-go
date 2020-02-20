@@ -3,7 +3,7 @@ package build
 import (
 	cref "github.com/pip-services3-go/pip-services3-commons-go/refer"
 	cbuild "github.com/pip-services3-go/pip-services3-components-go/build"
-	elog "github.com/pip-services3-node/pip-services3-elasticsearch-go/log"
+	elog "github.com/pip-services3-go/pip-services3-elasticsearch-go/log"
 )
 
 /*
