@@ -20,19 +20,18 @@ import (
 
 /*
 ElasticSearchLogger is logger that dumps execution logs to ElasticSearch service.
-
 ElasticSearch is a popular search index. It is often used
 to store and index execution logs by itself or as a part of
 ELK (ElasticSearch - Logstash - Kibana) stack.
 
 Authentication is not supported in this version.
 
- Configuration parameters
+Configuration parameters:
 
 - level:             maximum log level to capture
 - source:            source (context) name
 - connection(s):
-    - discovery_key:         (optional) a key to retrieve the connection from [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/connect.idiscovery.html IDiscovery]]
+    - discovery_key:         (optional) a key to retrieve the connection from IDiscovery
     - protocol:              connection protocol: http or https
     - host:                  host name or IP address
     - port:                  port int
@@ -48,14 +47,14 @@ Authentication is not supported in this version.
     - max_retries:     maximum int of retries (default: 3)
     - index_message:   true to enable indexing for message object (default: false)
 
- References
+References:
 
 - *:context-info:*:*:1.0      (optional)  ContextInfo to detect the context id and specify counters source
 - *:discovery:*:*:1.0         (optional)  IDiscovery services to resolve connection
 
- Example
+Example:
 
-    let logger = NewElasticSearchLogger();
+    logger := NewElasticSearchLogger();
     logger.Configure(cconf.NewConfigParamsFromTuples(
         "connection.protocol", "http",
         "connection.host", "localhost",
@@ -87,23 +86,22 @@ type ElasticSearchLogger struct {
 // Retruns *ElasticSearchLogger
 // pointer on new ElasticSearchLogger
 func NewElasticSearchLogger() *ElasticSearchLogger {
-	esl := ElasticSearchLogger{}
-	esl.CachedLogger = clog.InheritCachedLogger(&esl)
-	esl.connectionResolver = crpccon.NewHttpConnectionResolver()
-	esl.index = "log"
-	esl.dailyIndex = false
-	esl.reconnect = 60000
-	esl.timeout = 30000
-	esl.maxRetries = 3
-	esl.Interval = 10000
-	esl.indexMessage = false
-	return &esl
+	c := ElasticSearchLogger{}
+	c.CachedLogger = clog.InheritCachedLogger(&c)
+	c.connectionResolver = crpccon.NewHttpConnectionResolver()
+	c.index = "log"
+	c.dailyIndex = false
+	c.reconnect = 60000
+	c.timeout = 30000
+	c.maxRetries = 3
+	c.Interval = 10000
+	c.indexMessage = false
+	return &c
 }
 
 // Configure are configures component by passing configuration parameters.
 // Parameters:
-// 	- config  *cconf.ConfigParams
-//   configuration parameters to be set.
+// 	- config  *cconf.ConfigParams   configuration parameters to be set.
 func (c *ElasticSearchLogger) Configure(config *cconf.ConfigParams) {
 	c.CachedLogger.Configure(config)
 
@@ -119,8 +117,7 @@ func (c *ElasticSearchLogger) Configure(config *cconf.ConfigParams) {
 
 // SetReferences method are sets references to dependent components.
 // Parameters:
-// 	- references cref.IReferences
-// 	references to locate the component dependencies.
+// 	- references cref.IReferences 	references to locate the component dependencies.
 func (c *ElasticSearchLogger) SetReferences(references cref.IReferences) {
 	c.CachedLogger.SetReferences(references)
 	c.connectionResolver.SetReferences(references)
@@ -134,8 +131,7 @@ func (c *ElasticSearchLogger) IsOpen() bool {
 
 // Open method are ppens the component.
 // Parameters:
-// - correlationId string
-// 	(optional) transaction id to trace execution through call chain.
+// - correlationId string 	(optional) transaction id to trace execution through call chain.
 // Returns error or nil, if no errors occured.
 func (c *ElasticSearchLogger) Open(correlationId string) (err error) {
 	if c.IsOpen() {
@@ -275,7 +271,7 @@ func (c *ElasticSearchLogger) createIndexIfNeeded(correlationId string, force bo
 
 // Save method are saves log messages from the cache.
 // Parameters:
-// - messages  a list with log messages
+// - messages []*clog.LogMessage a list with log messages
 // Retruns error or nil for success.
 func (c *ElasticSearchLogger) Save(messages []*clog.LogMessage) (err error) {
 

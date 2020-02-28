@@ -7,9 +7,8 @@ import (
 )
 
 /*
-Creates ElasticSearch components by their descriptors.
-
-SeeElasticSearchLogger
+DefaultElasticSearchFactory are creates ElasticSearch components by their descriptors.
+See ElasticSearchLogger
 */
 type DefaultElasticSearchFactory struct {
 	cbuild.Factory
@@ -17,15 +16,14 @@ type DefaultElasticSearchFactory struct {
 	ElasticSearchLoggerDescriptor *cref.Descriptor
 }
 
-/*
-	Create a new instance of the factory.
-*/
+// NewDefaultElasticSearchFactory create a new instance of the factory.
+// Retruns *DefaultElasticSearchFactory
+// pointer on new factory
 func NewDefaultElasticSearchFactory() *DefaultElasticSearchFactory {
-	//super();
-	desf := DefaultElasticSearchFactory{}
-	desf.Factory = *cbuild.NewFactory()
-	desf.Descriptor = cref.NewDescriptor("pip-services", "factory", "elasticsearch", "default", "1.0")
-	desf.ElasticSearchLoggerDescriptor = cref.NewDescriptor("pip-services", "logger", "elasticsearch", "*", "1.0")
-	desf.RegisterType(desf.ElasticSearchLoggerDescriptor, elog.NewElasticSearchLogger)
-	return &desf
+	c := DefaultElasticSearchFactory{}
+	c.Factory = *cbuild.NewFactory()
+	c.Descriptor = cref.NewDescriptor("pip-services", "factory", "elasticsearch", "default", "1.0")
+	c.ElasticSearchLoggerDescriptor = cref.NewDescriptor("pip-services", "logger", "elasticsearch", "*", "1.0")
+	c.RegisterType(c.ElasticSearchLoggerDescriptor, elog.NewElasticSearchLogger)
+	return &c
 }
