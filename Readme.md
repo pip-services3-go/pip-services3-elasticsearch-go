@@ -6,7 +6,7 @@ It contains the ElasticSearch logger.
 Quick Links:
 
 * [Downloads](https://github.com/pip-services3-go/pip-services3-elasticsearch-go/blob/master/docs/Downloads.md)
-* [API Reference](https://godoc.org/github.com/pip-services3-elasticsearch-go/)
+* [API Reference](https://godoc.org/github.com/pip-services3-go/pip-services3-elasticsearch-go/)
 * [Configuration](https://github.com/pip-services3-go/pip-services3-elasticsearch-go/blob/master/docs/Configuration.md)
 * [Building and Testing](https://github.com/pip-services3-go/pip-services3-elasticsearch-go/blob/master/docs/Development.md)
 * [Contributing](https://github.com/pip-services3-go/pip-services3-elasticsearch-go/blob/master/docs/Development.md#contrib)
