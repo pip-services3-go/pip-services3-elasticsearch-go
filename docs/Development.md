@@ -32,10 +32,11 @@ git clone git@github.com:pip-services/pip-services-elasticsearch-go.git
 ```
 
 If you worked with the microservice before you can check out latest changes and update the dependencies:
-```bash
-# Update source code updates from github
-go get -u
 
+# Update source code updates from github
+```bash
+go get -u
+```
 ## <a name="build"></a> Building
 
 The commons is written in Golang language.
