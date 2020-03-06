@@ -4,6 +4,8 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/elastic/go-elasticsearch/v8 v8.0.0-20200210103600-aff00e5adfde h1:Y9SZx8RQqFycLxi5W5eFmxMqnmijULVc3LMjBTtZQdM=
 github.com/elastic/go-elasticsearch/v8 v8.0.0-20200210103600-aff00e5adfde/go.mod h1:xe9a/L2aeOgFKKgrO3ibQTnMdpAeL0GC+5/HpGScSa4=
+github.com/elastic/go-elasticsearch/v8 v8.0.0-20200229071441-52d1cf7160ac h1:uXxUx3FXX8bsFS4zxUzIyltlm6qH7tm7S+f1MzseUVU=
+github.com/elastic/go-elasticsearch/v8 v8.0.0-20200229071441-52d1cf7160ac/go.mod h1:xe9a/L2aeOgFKKgrO3ibQTnMdpAeL0GC+5/HpGScSa4=
 github.com/gorilla/mux v1.7.3/go.mod h1:1lud6UwP+6orDFRuTfBEV8e9/aOM/c4fVVCaMa2zaAs=
 github.com/hashicorp/go-cleanhttp v0.5.1/go.mod h1:JpRdi6/HCYpAwUzNwuwqhbovhLtngrth3wmdIIUrZ80=
 github.com/hashicorp/go-hclog v0.9.2/go.mod h1:5CU+agLiy3J7N7QjHK5d05KxGsuXiQLrjA0H7acj2lQ=
@@ -19,8 +21,12 @@ github.com/pip-services3-go/pip-services3-components-go v1.0.0 h1:v2aJdHYohzNg50
 github.com/pip-services3-go/pip-services3-components-go v1.0.0/go.mod h1:Me/KFWw/xeMML89twlGdFKqnvprgt2qyi8xAV1+XKGs=
 github.com/pip-services3-go/pip-services3-components-go v1.0.1 h1:dvoUIO/EkK3XODWrpYDj8Li7tmiiOc1rjv1ap8F7AQM=
 github.com/pip-services3-go/pip-services3-components-go v1.0.1/go.mod h1:Me/KFWw/xeMML89twlGdFKqnvprgt2qyi8xAV1+XKGs=
+github.com/pip-services3-go/pip-services3-components-go v1.0.2 h1:46jDnLU9f4H+vIUKyTGY5MqZiTK7gKYjF6xU3iXZcWI=
+github.com/pip-services3-go/pip-services3-components-go v1.0.2/go.mod h1:Me/KFWw/xeMML89twlGdFKqnvprgt2qyi8xAV1+XKGs=
 github.com/pip-services3-go/pip-services3-rpc-go v0.0.0-20200214083813-91957c1ed8d1 h1:AN8UGbmoAKR6frktRaQeKflFhe48/NZRkHqdhaVMB4Q=
 github.com/pip-services3-go/pip-services3-rpc-go v0.0.0-20200214083813-91957c1ed8d1/go.mod h1:boD+x5t7ft4JOTVpHwrn1hz2mQng/zvo9lnLqeE/oPg=
+github.com/pip-services3-go/pip-services3-rpc-go v1.0.0 h1:MUAURWTkgII0yWn/6Nta55AkXXQw3PToOwNLdIhCASs=
+github.com/pip-services3-go/pip-services3-rpc-go v1.0.0/go.mod h1:boD+x5t7ft4JOTVpHwrn1hz2mQng/zvo9lnLqeE/oPg=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/satori/go.uuid v1.2.0 h1:0uYX9dsZ2yD7q2RtLRtPSdGDWzjeM3TbMJP9utgA0ww=
