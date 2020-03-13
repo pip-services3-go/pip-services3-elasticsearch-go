@@ -188,6 +188,7 @@ func (c *ElasticSearchLogger) Close(correlationId string) (err error) {
 
 	c.Cache = make([]*clog.LogMessage, 0, 0)
 
+	close(c.timer)
 	c.timer = nil
 	c.client = nil
 	return nil
