@@ -58,7 +58,7 @@ Example:
     logger.Configure(cconf.NewConfigParamsFromTuples(
         "connection.protocol", "http",
         "connection.host", "localhost",
-		"connection.port", "9200"
+        "connection.port", "9200"
     ));
 
     logger.Open("123")
@@ -101,7 +101,7 @@ func NewElasticSearchLogger() *ElasticSearchLogger {
 
 // Configure are configures component by passing configuration parameters.
 // Parameters:
-// 	- config  *cconf.ConfigParams   configuration parameters to be set.
+//   - config  *cconf.ConfigParams   configuration parameters to be set.
 func (c *ElasticSearchLogger) Configure(config *cconf.ConfigParams) {
 	c.CachedLogger.Configure(config)
 
@@ -117,7 +117,7 @@ func (c *ElasticSearchLogger) Configure(config *cconf.ConfigParams) {
 
 // SetReferences method are sets references to dependent components.
 // Parameters:
-// 	- references cref.IReferences 	references to locate the component dependencies.
+//   - references cref.IReferences 	references to locate the component dependencies.
 func (c *ElasticSearchLogger) SetReferences(references cref.IReferences) {
 	c.CachedLogger.SetReferences(references)
 	c.connectionResolver.SetReferences(references)
@@ -131,7 +131,7 @@ func (c *ElasticSearchLogger) IsOpen() bool {
 
 // Open method are ppens the component.
 // Parameters:
-// - correlationId string 	(optional) transaction id to trace execution through call chain.
+//  - correlationId string 	(optional) transaction id to trace execution through call chain.
 // Returns error or nil, if no errors occured.
 func (c *ElasticSearchLogger) Open(correlationId string) (err error) {
 	if c.IsOpen() {
@@ -174,7 +174,7 @@ func (c *ElasticSearchLogger) Open(correlationId string) (err error) {
 
 // Close method are closes component and frees used resources.
 // Parameters:
-// - correlationId  string	(optional) transaction id to trace execution through call chain.
+//   - correlationId  string	(optional) transaction id to trace execution through call chain.
 // Returns error or nil, if no errors occured.
 func (c *ElasticSearchLogger) Close(correlationId string) (err error) {
 	svErr := c.Save(c.Cache)
@@ -272,7 +272,7 @@ func (c *ElasticSearchLogger) createIndexIfNeeded(correlationId string, force bo
 
 // Save method are saves log messages from the cache.
 // Parameters:
-// - messages []*clog.LogMessage a list with log messages
+//   - messages []*clog.LogMessage a list with log messages
 // Retruns error or nil for success.
 func (c *ElasticSearchLogger) Save(messages []*clog.LogMessage) (err error) {
 
