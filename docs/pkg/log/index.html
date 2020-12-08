@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+
+  <title>log - Go Documentation Server</title>
+
+<link type="text/css" rel="stylesheet" href="../../lib/godoc/style.css">
+
+<script>window.initFuncs = [];</script>
+<script src="../../lib/godoc/jquery.js" defer></script>
+
+
+
+<script>var goVersion = "go1.13.15";</script>
+<script src="../../lib/godoc/godocs.js" defer></script>
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide"><a href="../index.html">Go Documentation Server</a></div>
+<div class="top-heading" id="heading-narrow"><a href="../index.html">GoDoc</a></div>
+<a href="index.html#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
+<form method="GET" action="http://localhost:6060/search">
+<div id="menu">
+
+<span class="search-box"><input type="search" id="search" name="q" placeholder="Search" aria-label="Search" required><button type="submit"><span><!-- magnifying glass: --><svg width="24" height="24" viewBox="0 0 24 24"><title>submit search</title><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/><path d="M0 0h24v24H0z" fill="none"/></svg></span></button></span>
+</div>
+</form>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Package log
+    <span class="text-muted"></span>
+  </h1>
+
+
+
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script>
+	document.ANALYSIS_DATA = null;
+	document.CALLGRAPH = null;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "log"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="index.html#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="index.html#pkg-index" class="indexLink">Index</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				
+				
+			</div>
+		</div>
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+			
+			
+				
+				<dd><a href="index.html#ElasticSearchLogger">type ElasticSearchLogger</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#NewElasticSearchLogger">func NewElasticSearchLogger() *ElasticSearchLogger</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#ElasticSearchLogger.Close">func (c *ElasticSearchLogger) Close(correlationId string) (err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#ElasticSearchLogger.Configure">func (c *ElasticSearchLogger) Configure(config *cconf.ConfigParams)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#ElasticSearchLogger.IsOpen">func (c *ElasticSearchLogger) IsOpen() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#ElasticSearchLogger.Open">func (c *ElasticSearchLogger) Open(correlationId string) (err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#ElasticSearchLogger.Save">func (c *ElasticSearchLogger) Save(messages []*clog.LogMessage) (err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#ElasticSearchLogger.SetReferences">func (c *ElasticSearchLogger) SetReferences(references cref.IReferences)</a></dd>
+				
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+
+		
+			<h3>Package files</h3>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="http://localhost:6060/src/log/ElasticSearchLogger.go">ElasticSearchLogger.go</a>
+			
+			</span>
+			</p>
+		
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		
+
+		
+		
+		
+		
+			
+			
+			<h2 id="ElasticSearchLogger">type <a href="http://localhost:6060/src/log/ElasticSearchLogger.go?s=2576:2864#L59">ElasticSearchLogger</a>
+				<a class="permalink" href="index.html#ElasticSearchLogger">&#xb6;</a>
+				
+				
+			</h2>
+			<p>
+ElasticSearchLogger is logger that dumps execution logs to ElasticSearch service.
+ElasticSearch is a popular search index. It is often used
+to store and index execution logs by itself or as a part of
+ELK (ElasticSearch - Logstash - Kibana) stack.
+</p>
+<p>
+Authentication is not supported in this version.
+</p>
+<p>
+Configuration parameters:
+</p>
+<p>
+- level:             maximum log level to capture
+- source:            source (context) name
+- connection(s):
+</p>
+<pre>- discovery_key:         (optional) a key to retrieve the connection from IDiscovery
+- protocol:              connection protocol: http or https
+- host:                  host name or IP address
+- port:                  port int
+- uri:                   resource URI or connection string with all parameters in it
+</pre>
+<p>
+- options:
+</p>
+<pre>- interval:        interval in milliseconds to save log messages (default: 10 seconds)
+- max_cache_size:  maximum int of messages stored in this cache (default: 100)
+- index:           ElasticSearch index name (default: &#34;log&#34;)
+- daily:           true to create a new index every day by adding date suffix to the index
+                   name (default: false)
+- reconnect:       reconnect timeout in milliseconds (default: 60 sec)
+- timeout:         invocation timeout in milliseconds (default: 30 sec)
+- max_retries:     maximum int of retries (default: 3)
+- index_message:   true to enable indexing for message object (default: false)
+</pre>
+<p>
+References:
+</p>
+<p>
+- *:context-info:*:*:1.0      (optional)  ContextInfo to detect the context id and specify counters source
+- *:discovery:*:*:1.0         (optional)  IDiscovery services to resolve connection
+</p>
+<p>
+Example:
+</p>
+<pre>logger := NewElasticSearchLogger();
+logger.Configure(cconf.NewConfigParamsFromTuples(
+    &#34;connection.protocol&#34;, &#34;http&#34;,
+    &#34;connection.host&#34;, &#34;localhost&#34;,
+    &#34;connection.port&#34;, &#34;9200&#34;
+));
+
+logger.Open(&#34;123&#34;)
+
+logger.Error(&#34;123&#34;, ex, &#34;Error occured: %s&#34;, ex.message);
+logger.Debug(&#34;123&#34;, &#34;Everything is OK.&#34;);
+</pre>
+
+			<pre>type ElasticSearchLogger struct {
+    *<a href="http://localhost:6060/pkg/github.com/pip-services3-go/pip-services3-components-go/log/">clog</a>.<a href="http://localhost:6060/pkg/github.com/pip-services3-go/pip-services3-components-go/log/#CachedLogger">CachedLogger</a>
+    <span class="comment">// contains filtered or unexported fields</span>
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="NewElasticSearchLogger">func <a href="http://localhost:6060/src/log/ElasticSearchLogger.go?s=3007:3057#L78">NewElasticSearchLogger</a>
+					<a class="permalink" href="index.html#NewElasticSearchLogger">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func NewElasticSearchLogger() *<a href="index.html#ElasticSearchLogger">ElasticSearchLogger</a></pre>
+				<p>
+NewElasticSearchLogger method creates a new instance of the logger.
+Retruns *ElasticSearchLogger
+pointer on new ElasticSearchLogger
+</p>
+
+				
+				
+			
+
+			
+				
+				<h3 id="ElasticSearchLogger.Close">func (*ElasticSearchLogger) <a href="http://localhost:6060/src/log/ElasticSearchLogger.go?s=5947:6016#L169">Close</a>
+					<a class="permalink" href="index.html#ElasticSearchLogger.Close">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (c *<a href="index.html#ElasticSearchLogger">ElasticSearchLogger</a>) Close(correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>) (err <a href="http://localhost:6060/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Close method are closes component and frees used resources.
+Parameters:
+</p>
+<pre>- correlationId  string	(optional) transaction id to trace execution through call chain.
+</pre>
+<p>
+Returns error or nil, if no errors occured.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="ElasticSearchLogger.Configure">func (*ElasticSearchLogger) <a href="http://localhost:6060/src/log/ElasticSearchLogger.go?s=3513:3580#L95">Configure</a>
+					<a class="permalink" href="index.html#ElasticSearchLogger.Configure">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (c *<a href="index.html#ElasticSearchLogger">ElasticSearchLogger</a>) Configure(config *<a href="http://localhost:6060/pkg/github.com/pip-services3-go/pip-services3-commons-go/config/">cconf</a>.<a href="http://localhost:6060/pkg/github.com/pip-services3-go/pip-services3-commons-go/config/#ConfigParams">ConfigParams</a>)</pre>
+				<p>
+Configure are configures component by passing configuration parameters.
+Parameters:
+</p>
+<pre>- config  *cconf.ConfigParams   configuration parameters to be set.
+</pre>
+
+				
+				
+				
+			
+				
+				<h3 id="ElasticSearchLogger.IsOpen">func (*ElasticSearchLogger) <a href="http://localhost:6060/src/log/ElasticSearchLogger.go?s=4582:4625#L118">IsOpen</a>
+					<a class="permalink" href="index.html#ElasticSearchLogger.IsOpen">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (c *<a href="index.html#ElasticSearchLogger">ElasticSearchLogger</a>) IsOpen() <a href="http://localhost:6060/pkg/builtin/#bool">bool</a></pre>
+				<p>
+IsOpen method are checks if the component is opened.
+Returns true if the component has been opened and false otherwise.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="ElasticSearchLogger.Open">func (*ElasticSearchLogger) <a href="http://localhost:6060/src/log/ElasticSearchLogger.go?s=4849:4917#L126">Open</a>
+					<a class="permalink" href="index.html#ElasticSearchLogger.Open">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (c *<a href="index.html#ElasticSearchLogger">ElasticSearchLogger</a>) Open(correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>) (err <a href="http://localhost:6060/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Open method are ppens the component.
+Parameters:
+</p>
+<pre>- correlationId string 	(optional) transaction id to trace execution through call chain.
+</pre>
+<p>
+Returns error or nil, if no errors occured.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="ElasticSearchLogger.Save">func (*ElasticSearchLogger) <a href="http://localhost:6060/src/log/ElasticSearchLogger.go?s=8571:8646#L267">Save</a>
+					<a class="permalink" href="index.html#ElasticSearchLogger.Save">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (c *<a href="index.html#ElasticSearchLogger">ElasticSearchLogger</a>) Save(messages []*<a href="http://localhost:6060/pkg/github.com/pip-services3-go/pip-services3-components-go/log/">clog</a>.<a href="http://localhost:6060/pkg/github.com/pip-services3-go/pip-services3-components-go/log/#LogMessage">LogMessage</a>) (err <a href="http://localhost:6060/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Save method are saves log messages from the cache.
+Parameters:
+</p>
+<pre>- messages []*clog.LogMessage a list with log messages
+</pre>
+<p>
+Retruns error or nil for success.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="ElasticSearchLogger.SetReferences">func (*ElasticSearchLogger) <a href="http://localhost:6060/src/log/ElasticSearchLogger.go?s=4288:4360#L111">SetReferences</a>
+					<a class="permalink" href="index.html#ElasticSearchLogger.SetReferences">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (c *<a href="index.html#ElasticSearchLogger">ElasticSearchLogger</a>) SetReferences(references <a href="http://localhost:6060/pkg/github.com/pip-services3-go/pip-services3-commons-go/refer/">cref</a>.<a href="http://localhost:6060/pkg/github.com/pip-services3-go/pip-services3-commons-go/refer/#IReferences">IReferences</a>)</pre>
+				<p>
+SetReferences method are sets references to dependent components.
+Parameters:
+</p>
+<pre>- references cref.IReferences 	references to locate the component dependencies.
+</pre>
+
+				
+				
+				
+			
+		
+	
+
+	
+
+
+
+
+
+
+
+<div id="footer">
+Build version go1.13.15.<br>
+Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
+the content of this page is licensed under the
+Creative Commons Attribution 3.0 License,
+and code is licensed under a <a href="http://localhost:6060/LICENSE">BSD license</a>.<br>
+<a href="http://localhost:6060/doc/tos.html">Terms of Service</a> |
+<a href="http://www.google.com/intl/en/policies/privacy/">Privacy Policy</a>
+</div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+</body>
+</html>
