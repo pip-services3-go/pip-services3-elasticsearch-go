@@ -7,8 +7,8 @@ services:
       dockerfile: docker/Dockerfile.test
     image: ${IMAGE:-pipdevs/test}
     environment:
-      - ELASTICSEARCH_SERVICE_HOST: elasticsearch
-      - ELASTICSEARCH_SERVICE_PORT: 9200
+      - ELASTICSEARCH_SERVICE_HOST=elasticsearch
+      - ELASTICSEARCH_SERVICE_PORT=9200
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.2.3
