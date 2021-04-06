@@ -12,8 +12,6 @@ See ElasticSearchLogger
 */
 type DefaultElasticSearchFactory struct {
 	cbuild.Factory
-	Descriptor                    *cref.Descriptor
-	ElasticSearchLoggerDescriptor *cref.Descriptor
 }
 
 // NewDefaultElasticSearchFactory create a new instance of the factory.
@@ -22,8 +20,10 @@ type DefaultElasticSearchFactory struct {
 func NewDefaultElasticSearchFactory() *DefaultElasticSearchFactory {
 	c := DefaultElasticSearchFactory{}
 	c.Factory = *cbuild.NewFactory()
-	c.Descriptor = cref.NewDescriptor("pip-services", "factory", "elasticsearch", "default", "1.0")
-	c.ElasticSearchLoggerDescriptor = cref.NewDescriptor("pip-services", "logger", "elasticsearch", "*", "1.0")
-	c.RegisterType(c.ElasticSearchLoggerDescriptor, elog.NewElasticSearchLogger)
+
+	elasticSearchLoggerDescriptor := cref.NewDescriptor("pip-services", "logger", "elasticsearch", "*", "1.0")
+
+	c.RegisterType(elasticSearchLoggerDescriptor, elog.NewElasticSearchLogger)
+
 	return &c
 }
