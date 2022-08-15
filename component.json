@@ -1,6 +1,10 @@
 {
-    "name": "pip-services3-elasticsearch-go",
-    "registry": "github.com/pip-services3-go",
-    "version": "3.0.0",
-    "build": 0
+    "name":  "pip-services3-elasticsearch-go",
+    "type": "module",
+    "language": "go",
+    "version": "1.0.0",
+    "build": 0,
+    "registry": "pipdevs",
+    "artifacts": [
+    ]
 }
