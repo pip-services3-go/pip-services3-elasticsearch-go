@@ -5,7 +5,7 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile.test
-    image: ${IMAGE:-pipdevs/test}
+    image: ${IMAGE:-pipservices/test}
     environment:
       - ELASTICSEARCH_SERVICE_HOST=elasticsearch
       - ELASTICSEARCH_SERVICE_PORT=9200
